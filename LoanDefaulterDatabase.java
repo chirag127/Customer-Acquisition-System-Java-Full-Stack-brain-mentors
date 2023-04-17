@@ -6,7 +6,18 @@ public class LoanDefaulterDatabase implements DefaulterDatabase {
     private Map<String, Double> defaulters;
 
     public LoanDefaulterDatabase() {
-        defaulters = new HashMap<>();
+        // defaulters =  add some dummy data during initialization
+
+        defaulters = new HashMap<>( );
+
+        defaulters.put("John Doe", 10000.0);
+
+
+        defaulters.put("John Smith", 30000.0);
+
+
+
+
     }
 
     @Override
@@ -31,5 +42,9 @@ public class LoanDefaulterDatabase implements DefaulterDatabase {
     @Override
     public double getTotalDefaultedAmount() {
         return defaulters.values().stream().mapToDouble(Double::doubleValue).sum();
+    }
+
+    public boolean isDefaulter(String name) {
+        return defaulters.containsKey(name);
     }
 }

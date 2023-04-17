@@ -2,72 +2,67 @@ import java.util.Scanner;
 
 public class LoanApplication {
 
-    void LoanApplication() {
-
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Loan Amount: ");
-        double loanAmount = sc.nextDouble();
-
-        System.out.print("Number of Years: ");
-        int numYears = sc.nextInt();
-
-        System.out.print("Annual Interest Rate (in %): ");
-        double annualInterestRate = sc.nextDouble();
-
-        System.out.println(); // Insert a new line
-
-        // Create a Loan object
-        Loan loan = new Loan(annualInterestRate, numYears, loanAmount);
-
-        // Print the amortization schedule
-        printAmortizationSchedule(loan);
-    }
-
-    public static void printAmortizationSchedule(Loan loan) {
-        double interestPaid, principalPaid, newBalance;
-        double monthlyPayment, totalPayment;
-        int month;
-        int numMonths = loan.getNumberOfYears() * 12;
-
-        // Output monthly payment and total payment
-        monthlyPayment = loan.getMonthlyPayment();
-        totalPayment = loan.getTotalPayment();
-        System.out.format("Monthly Payment: %8.2f%n", monthlyPayment);
-        System.out.format("Total Payment:   %8.2f%n", totalPayment);
-
-        // Print the table header
-        printTableHeader();
-
-        double principal = loan.getLoanAmount();
-        for (month = 1; month <= numMonths; month++) {
-            // Compute amount paid and new balance for each payment period
-            interestPaid = principal * (loan.getAnnualInterestRate() / 1200);
-            principalPaid = monthlyPayment - interestPaid;
-            newBalance = principal - principalPaid;
-
-            // Output the data item
-            printScheduleItem(month, interestPaid, principalPaid, newBalance);
-
-            // Update the balance
-            principal = newBalance;
+// printTableHeader
+// printScheduleItem
+    public static void printAmortizationSchedule(Customer customer) {
+        System.out.println("Amortization Schedule");
+        System.out.println("Principal: " + customer.getAmount());
+        System.out.println("Interest Rate: " + customer.getInterestRate());
+        System.out.println("Term: " + customer.getTerm());
+        System.out.println();
+        System.out.println("Month\tBalance\tInterest\tPrincipal\tPayment");
+        System.out.println("0\t" + customer.getLoanAmount() + "\t0\t0\t0");
+        for (int i = 1; i <= customer.getTerm(); i++) {
+            double interest = customer.getLoanAmount() * customer.getInterestRate();
+            double principal = customer.getMonthlyPayment() - interest;
+            double balance = customer.getLoanAmount() - principal;
+            System.out.println(i + "\t" + balance + "\t" + interest + "\t" + principal + "\t" + customer.getMonthlyPayment());
+            customer.setLoanAmount(balance);
         }
     }
 
-    private static void printScheduleItem(int month, double interestPaid,
-            double principalPaid, double newBalance) {
-        System.out.format("%8d%10.2f%10.2f%12.2f\n",
-                month, interestPaid, principalPaid, newBalance);
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the customer's name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter the customer's annual interest rate: ");
+        double interestRate = scanner.nextDouble();
+        System.out.print("Enter the loan amount: ");
+        double loanAmount = scanner.nextDouble();
+        System.out.print("Enter the term of the loan in years: ");
+        int term = scanner.nextInt();
+        scanner.close();
+
+        Customer customer = new Customer(name, interestRate, loanAmount, term);
+        customer.calculateMonthlyPayment();
+        printAmortizationSchedule(customer);
     }
 
-    private static void printTableHeader() {
-        System.out.println("\nAmortization schedule");
-        for (int i = 0; i < 40; i++) { // Draw a line
-            System.out.print("-");
-        }
-        System.out.format("\n%8s%10s%10s%12s\n",
-                "Payment#", "Interest", "Principal", "Balance");
-        System.out.format("%8s%10s%10s%12s\n\n",
-                "", "paid", "paid", "");
-    }
 }
+
+// Path: Customer.java
+public class Customer {
+
+    private String name;
+    private double interestRate;
+    private double loanAmount;
+    private int term;
+
+    public Customer(String name, double interestRate, double loanAmount, int term) {
+        this.name = name;
+        this.interestRate = interestRate;
+        this.loanAmount = loanAmount;
+        this.term = term;
+    }
+
+    public void calculateMonthlyPayment() {
+        double monthlyInterestRate = interestRate / 12;
+        double monthlyPayment = loanAmount * monthlyInterestRate / (1 - 1 / Math.pow(1 + monthlyInterestRate, term * 12));
+        setMonthlyPayment(monthlyPayment);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name)

@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class StageOne {
 
-    Customer StageOne(Customer customer){
+    Customer StageOne(Customer customer,TrackStages trackStages){
 
         // get the customer details
 
@@ -50,11 +50,11 @@ public class StageOne {
 
         if (loanType == 1) {
 
-            customer.setLoanType("Home Loan");
+            customer.setLoanType("HL");
 
         } else if (loanType == 2) {
 
-            customer.setLoanType("Auto Loan");
+            customer.setLoanType("AL");
 
         } else {
 
@@ -102,4 +102,8 @@ public class StageOne {
         return customer;
 
     }
+
+    trackStages.setCurrentStage(1);
+
+
 }
