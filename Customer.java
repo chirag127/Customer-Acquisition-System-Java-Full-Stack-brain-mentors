@@ -1,14 +1,20 @@
+import java.util.Scanner;
+// import java.util.Date;
+
+
 public class Customer {
-    private String name;
-    private int age;
-    private String city;
-    private String loanType;
-    private double amount;
-    private String mobile;
-    private String email;
-    private String dateOfBirth;
-    private double annualIncome;
-    private double liability;
+    private static String name;
+    private static int age;
+    private static String city;
+    private static String loanType;
+    private static double amount;
+    private static String mobile;
+    private static String email;
+    private static String dateOfBirth;
+    private static double annualIncome;
+    private static double liability;
+
+
 
     // Getters and setters for all attributes
     String getName() {

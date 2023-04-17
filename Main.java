@@ -3,10 +3,11 @@ public class Main {
         // Create instances of necessary classes
         Customer customer = new Customer();
         Loan loan = new Loan();
-        LoanApplication loanApplication = new LoanApplication(customer, loan);
+        LoanApplication loanApplication = new LoanApplication();
         DefaulterDatabase defaulterDatabase = new DefaulterDatabase();
 
-        // Perform necessary actions, such as applying for a loan, quick data entry, etc.
+        // Perform necessary actions, such as applying for a loan, quick data entry,
+        // etc.
         // Example:
         loanApplication.applyForLoan();
         loanApplication.quickDataEntry();
