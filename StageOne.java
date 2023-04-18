@@ -2,10 +2,9 @@ import java.util.Scanner;
 
 public class StageOne {
 
-    Customer StageOne(Customer customer,TrackStages trackStages){
+    Customer main(Customer customer) {
 
         // get the customer details
-
 
         Scanner scanner = new Scanner(System.in);
 
@@ -24,7 +23,6 @@ public class StageOne {
             namePascalCase += s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase() + " ";
 
         }
-
 
         customer.setName(namePascalCase);
 
@@ -74,6 +72,10 @@ public class StageOne {
 
         String mobile = scanner.nextLine();
 
+        // close the scanner
+
+        scanner.close();
+
         // check if mobile is 10 digit number
 
         if (mobile.length() != 10) {
@@ -82,13 +84,13 @@ public class StageOne {
 
         }
 
-        try{
+        try {
 
-                Long.parseLong(mobile);
+            Long.parseLong(mobile);
 
         }
 
-        catch(NumberFormatException e){
+        catch (NumberFormatException e) {
 
             System.out.println("Invalid mobile number");
 
@@ -98,12 +100,9 @@ public class StageOne {
 
         }
         customer.setMobile(mobile);
-
         return customer;
 
+        // set current stage to 1
+
     }
-
-    trackStages.setCurrentStage(1);
-
-
 }

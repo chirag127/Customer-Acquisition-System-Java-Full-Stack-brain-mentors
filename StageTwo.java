@@ -10,10 +10,14 @@ public class StageTwo {
     // Duration Max 30 Y
     // Auto Loan Max 7-10Y
 
-    Customer StageTwo(Customer customer,TrackStages trackStages)
+    /**
+     * @param customer
+     * @return
+     */
+    Customer main(Customer customer)
 
     {
-        Scanner scanner = new Scanner();
+        Scanner scanner = new Scanner(System.in);
 
         // email
 
@@ -29,13 +33,13 @@ public class StageTwo {
 
         } else {
 
+            scanner.close();
+
             System.out.println("Invalid email format");
 
-            customer = StageTwo(customer);
+            customer = main(customer);
 
             return customer;
-
-
 
         }
 
@@ -49,13 +53,15 @@ public class StageTwo {
 
         if (dob.matches("\\d{2}-\\d{2}-\\d{4}")) {
 
-            customer.setDob(dob);
+            customer.setDateOfBirth(dob);
 
         } else {
 
             System.out.println("Invalid date format");
 
-            customer = StageTwo(customer);
+            scanner.close();
+
+            customer = main(customer);
 
             return customer;
 
@@ -65,19 +71,21 @@ public class StageTwo {
 
         System.out.println("Enter your annual income: ");
 
-        String income = scanner.nextLine();
+        int income = scanner.nextInt();
 
         // check the income format
 
-        if (income.matches("\\d+")) {
+        if (income > 0) {
 
-            customer.setIncome(income);
+            customer.setAnnualIncome(income);
 
         } else {
 
             System.out.println("Invalid income format");
 
-            customer = StageTwo(customer);
+            customer = main(customer);
+
+            scanner.close();
 
             return customer;
 
@@ -89,53 +97,42 @@ public class StageTwo {
 
         String liability = scanner.nextLine();
 
-        // check the liability format
+        // covert the liability to double
 
-        if (liability.matches("\\d+")) {
+        double liabilityDouble = Double.parseDouble(liability);
 
-            customer.setLiability(liability);
+        customer.setLiability(liabilityDouble);
+
+        // ask for the duration
+
+        System.out.println("Enter the duration of the loan: ");
+
+        int duration = scanner.nextInt();
+
+        scanner.nextLine();
+
+        // max duration is 65 - age
+
+        int age = 2023 - Integer.parseInt(dob.split("-")[2]);
+
+        if (duration > (65 - age)) {
+
+            System.out.println("The duration of the loan cannot be more than " + (65 - age) + " years");
+
+            System.exit(0);
 
         } else {
 
-            System.out.println("Invalid liability format");
-
-            customer = StageTwo(customer);
-
-            return customer;
+            customer.setDuration(duration);
 
         }
 
-            // ask for the duration
-
-            System.out.println("Enter the duration of the loan: ");
-
-            int duration = scanner.nextInt();
-
-            scanner.nextLine();
-
-            // max duration is 65 - age
-
-            age = 2023 - Integer.parseInt(dob.split("-")[2]);
-
-            if (duration > (65 - age)) {
-
-                System.out.println("The duration of the loan cannot be more than " + (65 - age) + " years");
-
-                System.exit(0);
-
-            } else {
-
-                customer.setDuration(duration);
-
-            }
-
-            // check the eligibility
-
-
+        // check the eligibility
 
         if (customer.getLoanType().equals("HL")) {
 
-            // HL - 85% (the max amount that can be borrowed is 85% of the amount of the property)
+            // HL - 85% (the max amount that can be borrowed is 85% of the amount of the
+            // property)
 
             // ask for hte property value
 
@@ -161,10 +158,7 @@ public class StageTwo {
 
                 customer.setAmount(propertyValue * 0.85);
 
-
-
             }
-
 
         }
 
@@ -200,12 +194,11 @@ public class StageTwo {
 
         }
 
+        // close the scanner
+
+        scanner.close();
         return customer;
 
     }
-
-    trackStages.setCurrentStage(2);
-
-
 
 }
